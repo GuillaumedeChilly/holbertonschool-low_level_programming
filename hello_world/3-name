@@ -1,3 +1,2 @@
 #!/bin/bash
-# Compile the C file into an executable named cisfun
-gcc "$CFILE" -o cisfun
+gcc -Wall -Werror -Wextra -pedantic -std=gnu89 "$CFILE" -o cisfun

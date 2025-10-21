@@ -1,3 +1,2 @@
 #!/bin/bash
-# Run the C file through the preprocessor and save result to "c"
-gcc -E "$CFILE" -o c
+gcc -Wall -Werror -Wextra -pedantic -std=gnu89 -E "$CFILE" -o c
