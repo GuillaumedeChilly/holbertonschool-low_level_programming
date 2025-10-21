@@ -1,0 +1,7 @@
+*.o
+*.s
+a.out
+cisfun
+size32
+size64
+c
