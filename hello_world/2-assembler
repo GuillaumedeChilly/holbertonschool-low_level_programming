@@ -1,0 +1,3 @@
+#!/bin/bash
+# Generate assembly from the C file; output .s with same basename
+gcc -S "$CFILE" -o "${CFILE%.c}.s"

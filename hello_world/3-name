@@ -1,0 +1,3 @@
+#!/bin/bash
+# Compile the C file into an executable named cisfun
+gcc "$CFILE" -o cisfun

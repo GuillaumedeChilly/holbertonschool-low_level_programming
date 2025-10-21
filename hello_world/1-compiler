@@ -1,0 +1,3 @@
+#!/bin/bash
+# Compile the C file without linking; output .o with same basename
+gcc -c "$CFILE" -o "${CFILE%.c}.o"
