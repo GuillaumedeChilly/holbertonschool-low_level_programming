@@ -1,12 +1,12 @@
 #include "main.h"
 
 /**
- * print_diagonal - Draw a diagonal line using '\' n times.
- * @n: Number of '\' characters to print.
+ * print_diagonal - Draw a diagonal using '\'
+ * @n: number of lines to print
  */
 void print_diagonal(int n)
 {
-	int row, space;
+	int row = 0;
 
 	if (n <= 0)
 	{
@@ -14,11 +14,17 @@ void print_diagonal(int n)
 		return;
 	}
 
-	for (row = 0; row < n; row++)
+	while (row < n)
 	{
-		for (space = 0; space < row; space++)
+		int sp = 0;
+
+		while (sp < row)
+		{
 			_putchar(' ');
+			sp++;
+		}
 		_putchar('\\');
 		_putchar('\n');
+		row++;
 	}
 }

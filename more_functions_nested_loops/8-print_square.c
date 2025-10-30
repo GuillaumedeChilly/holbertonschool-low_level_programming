@@ -1,12 +1,12 @@
 #include "main.h"
 
 /**
- * print_square - Print a square of size @size using '#'.
- * @size: Square size. If <= 0, prints only newline.
+ * print_square - Print a size x size square using '#'
+ * @size: square size
  */
 void print_square(int size)
 {
-	int r, c;
+	int r = 0;
 
 	if (size <= 0)
 	{
@@ -14,10 +14,16 @@ void print_square(int size)
 		return;
 	}
 
-	for (r = 0; r < size; r++)
+	while (r < size)
 	{
-		for (c = 0; c < size; c++)
+		int c = 0;
+
+		while (c < size)
+		{
 			_putchar('#');
+			c++;
+		}
 		_putchar('\n');
+		r++;
 	}
 }

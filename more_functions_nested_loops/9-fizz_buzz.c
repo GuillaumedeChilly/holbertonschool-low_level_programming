@@ -1,9 +1,9 @@
 #include <stdio.h>
 
 /**
- * main - Print 1..100 with Fizz/Buzz rules.
+ * main - FizzBuzz 1..100
  *
- * Return: Always 0.
+ * Return: 0 on success.
  */
 int main(void)
 {
@@ -20,7 +20,7 @@ int main(void)
 		else
 			printf("%d", i);
 
-		if (i != 100)
+		if (i < 100)
 			printf(" ");
 	}
 	printf("\n");
