@@ -1,28 +1,11 @@
 #include "main.h"
 
 /**
- * _strcat - concatenates two strings
- * @dest: destination buffer
- * @src: source string
+ * _strcat - Concatenates two strings.
+ * @dest: Buffer holding the first string and the result.
+ * @src: String to append to @dest.
  *
- * Return: pointer to dest
- */
-char *_strcat(char *dest, char *src)
-{
-	int i = 0;
-	int j = 0;
-
-	while (dest[i] !
-
-cat > 0-strcat.c << 'EOF'
-#include "main.h"
-
-/**
- * _strcat - concatenates two strings
- * @dest: destination buffer
- * @src: source string
- *
- * Return: pointer to dest
+ * Return: Pointer to @dest.
  */
 char *_strcat(char *dest, char *src)
 {
@@ -34,10 +17,11 @@ char *_strcat(char *dest, char *src)
 
 	while (src[j] != '\0')
 	{
-		dest[i + j] = src[j];
+		dest[i] = src[j];
+		i++;
 		j++;
 	}
+	dest[i] = '\0';
 
-	dest[i + j] = '\0';
 	return (dest);
 }
