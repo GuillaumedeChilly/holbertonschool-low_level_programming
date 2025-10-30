@@ -2,20 +2,20 @@
 #include <limits.h>
 
 /**
- * _atoi - converts a string to an integer
- * @s: pointer to string to convert
+ * _atoi - converts a string to an integer.
+ * @s: string to convert.
  *
- * Return: integer value on success, or 0 if no number found.
- *         If overflow would occur, clamp to INT_MAX / INT_MIN.
+ * Return: converted number, clamped to INT_MAX/INT_MIN on overflow,
+ *         or 0 if no digits are found.
  */
 int _atoi(char *s)
 {
 	int i = 0;
 	int sign = 1;
-	int num = 0;      /* we build this as a NEGATIVE number */
+	int res = 0;
 	int started = 0;
 
-	/* Skip non-digits and collect +/- signs */
+	/* Walk prefix: flip sign on '-', start when we hit a digit */
 	while (s[i] != '\0' && !started)
 	{
 		if (s[i] == '-')
@@ -28,22 +28,29 @@ int _atoi(char *s)
 	if (!started)
 		return (0);
 
-	/* step back so s[i] is the first digit */
-	i--;
+	i--; /* step back to first digit we saw */
 
-	/* Accumulate as negative to safely represent INT_MIN */
+	/* Convert digits with overflow protection */
 	while (s[i] >= '0' && s[i] <= '9')
 	{
 		int d = s[i] - '0';
 
-		/* Overflow check before num * 10 - d */
-		if (num < (INT_MIN + d) / 10)
-			return (sign == 1 ? INT_MAX : INT_MIN);
-
-		num = (num * 10) - d;
+		if (sign == 1)
+		{
+			/* res * 10 + d > INT_MAX ? */
+			if (res > (INT_MAX - d) / 10)
+				return (INT_MAX);
+			res = res * 10 + d;
+		}
+		else
+		{
+			/* res * 10 - d < INT_MIN ?  (res is kept negative here) */
+			if (res < (INT_MIN + d) / 10)
+				return (INT_MIN);
+			res = res * 10 - d;
+		}
 		i++;
 	}
 
-	/* If sign is positive, flip back to positive; else keep as negative */
-	return (sign == 1 ? -num : num);
+	return (res);
 }
