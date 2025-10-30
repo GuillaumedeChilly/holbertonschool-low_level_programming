@@ -1,22 +1,25 @@
 #include "main.h"
+
 /**
- * print_triangle - prints a right-aligned triangle of '#'
- * @size: size of the triangle
+ * print_triangle - Print a right-aligned triangle of '#'.
+ * @size: Height of the triangle. If <= 0, prints only newline.
  */
 void print_triangle(int size)
 {
-    int i, j, k;
-    if (size <= 0)
-    {
-        _putchar('\n');
-        return;
-    }
-    for (i = 1; i <= size; i++)
-    {
-        for (j = i; j < size; j++)
-            _putchar(' ');
-        for (k = 1; k <= i; k++)
-            _putchar('#');
-        _putchar('\n');
-    }
+	int row, space, hash;
+
+	if (size <= 0)
+	{
+		_putchar('\n');
+		return;
+	}
+
+	for (row = 1; row <= size; row++)
+	{
+		for (space = size - row; space > 0; space--)
+			_putchar(' ');
+		for (hash = 0; hash < row; hash++)
+			_putchar('#');
+		_putchar('\n');
+	}
 }
