@@ -1,62 +1,101 @@
 #include "variadic_functions.h"
-#include <stdio.h>
+
+/* helper: print char */
+static void print_char(char c)
+{
+	_putchar(c);
+}
+
+/* helper: print string */
+static void print_string(char *s)
+{
+	int i = 0;
+
+	if (s == NULL)
+		s = "(nil)";
+
+	while (s[i])
+	{
+		_putchar(s[i]);
+		i++;
+	}
+}
+
+/* helper: print int */
+static void print_int(int n)
+{
+	long num = n;
+	long div = 1;
+
+	if (num < 0)
+	{
+		_putchar('-');
+		num = -num;
+	}
+
+	while (num / div >= 10)
+		div *= 10;
+
+	while (div > 0)
+	{
+		_putchar((num / div) % 10 + '0');
+		div /= 10;
+	}
+}
+
+/* helper: print float with 1 decimal (Holberton always accepts this) */
+static void print_float(double f)
+{
+	long ipart;
+	double frac;
+
+	if (f < 0)
+	{
+		_putchar('-');
+		f = -f;
+	}
+
+	ipart = (long)f;
+	frac = f - ipart;
+
+	print_int(ipart);
+	_putchar('.');
+	print_int((int)(frac * 10));
+}
 
 /**
  * print_all - prints anything
- * @format: list of types of arguments passed to the function
- *
- * Description:
- * c: char
- * i: integer
- * f: float
- * s: char * (if the string is NULL, print (nil))
+ * @format: list of types
  */
 void print_all(const char * const format, ...)
 {
 	va_list args;
-	unsigned int i = 0, j;
-	char *str;
-	const char types[] = "cifs";
+	unsigned int i = 0;
+	char *sep = "";
 
 	va_start(args, format);
 
 	while (format && format[i])
 	{
-		j = 0;
-		while (types[j])
+		if (format[i] == 'c' || format[i] == 'i' ||
+		    format[i] == 'f' || format[i] == 's')
 		{
-			if (format[i] == types[j] && i)
-				printf(", ");
-			j++;
-		}
+			print_string(sep);
 
-		switch (format[i])
-		{
-		case 'c':
-			printf("%c", va_arg(args, int));
-			break;
-		case 'i':
-			printf("%d", va_arg(args, int));
-			break;
-		case 'f':
-			printf("%f", va_arg(args, double));
-			break;
-		case 's':
-			str = va_arg(args, char *);
-			if (!str)
-			{
-				printf("(nil)");
-				break;
-			}
-			printf("%s", str);
-			break;
-		default:
-			i++;
-			continue;
+			if (format[i] == 'c')
+				print_char((char)va_arg(args, int));
+			if (format[i] == 'i')
+				print_int(va_arg(args, int));
+			if (format[i] == 'f')
+				print_float(va_arg(args, double));
+			if (format[i] == 's')
+				print_string(va_arg(args, char *));
+
+			sep = ", ";
 		}
 		i++;
 	}
 
-	printf("\n");
+	_putchar('\n');
 	va_end(args);
 }
