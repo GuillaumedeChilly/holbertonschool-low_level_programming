@@ -3,43 +3,60 @@
 
 /**
  * print_all - prints anything
- * @format: list of argument types
+ * @format: list of types of arguments passed to the function
+ *
+ * Description:
+ * c: char
+ * i: integer
+ * f: float
+ * s: char * (if the string is NULL, print (nil))
  */
 void print_all(const char * const format, ...)
 {
-    int i = 0;
-    char *s, *sep = "";
-    va_list args;
+	va_list args;
+	unsigned int i = 0, j;
+	char *str;
+	const char types[] = "cifs";
 
-    va_start(args, format);
+	va_start(args, format);
 
-    while (format && format[i])
-    {
-        switch (format[i])
-        {
-            case 'c':
-                printf("%s%c", sep, va_arg(args, int));
-                break;
-            case 'i':
-                printf("%s%d", sep, va_arg(args, int));
-                break;
-            case 'f':
-                printf("%s%f", sep, (double)va_arg(args, double));
-                break;
-            case 's':
-                s = va_arg(args, char *);
-                if (!s)
-                    s = "(nil)";
-                printf("%s%s", sep, s);
-                break;
-            default:
-                i++;
-                continue;
-        }
-        sep = ", ";
-        i++;
-    }
+	while (format && format[i])
+	{
+		j = 0;
+		while (types[j])
+		{
+			if (format[i] == types[j] && i)
+				printf(", ");
+			j++;
+		}
 
-    printf("\n");
-    va_end(args);
+		switch (format[i])
+		{
+		case 'c':
+			printf("%c", va_arg(args, int));
+			break;
+		case 'i':
+			printf("%d", va_arg(args, int));
+			break;
+		case 'f':
+			printf("%f", va_arg(args, double));
+			break;
+		case 's':
+			str = va_arg(args, char *);
+			if (!str)
+			{
+				printf("(nil)");
+				break;
+			}
+			printf("%s", str);
+			break;
+		default:
+			i++;
+			continue;
+		}
+		i++;
+	}
+
+	printf("\n");
+	va_end(args);
 }
