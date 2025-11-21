@@ -1,24 +1,10 @@
 #include "variadic_functions.h"
+#include <stdio.h>
 
 /**
- * print_string - prints a string using _putchar
- * @s: string
- */
-static void print_string(const char *s)
-{
-	int i = 0;
-
-	while (s && s[i])
-	{
-		_putchar(s[i]);
-		i++;
-	}
-}
-
-/**
- * print_strings - prints strings with separator
- * @separator: separator string
- * @n: number of strings
+ * print_strings - prints strings followed by a new line
+ * @separator: string to be printed between the strings
+ * @n: number of strings passed to the function
  */
 void print_strings(const char *separator, const unsigned int n, ...)
 {
@@ -33,14 +19,14 @@ void print_strings(const char *separator, const unsigned int n, ...)
 		s = va_arg(args, char *);
 
 		if (s == NULL)
-			print_string("(nil)");
+			printf("(nil)");
 		else
-			print_string(s);
+			printf("%s", s);
 
-		if (separator && i < n - 1)
-			print_string(separator);
+		if (separator != NULL && i != n - 1)
+			printf("%s", separator);
 	}
 
-	_putchar('\n');
+	printf("\n");
 	va_end(args);
 }
