@@ -5,10 +5,30 @@
 #define BUF_SIZE 1024
 
 /**
- * close_fd - closes a file descriptor and handles error
- * @fd: file descriptor
+ * create_buffer - allocates a buffer for copying
+ * @file: name of the file we're writing to (for error message)
+ *
+ * Return: pointer to the new buffer
  */
-void close_fd(int fd)
+static char *create_buffer(const char *file)
+{
+	char *buffer;
+
+	buffer = malloc(sizeof(char) * BUF_SIZE);
+	if (buffer == NULL)
+	{
+		dprintf(STDERR_FILENO, "Error: Can't write to %s\n", file);
+		exit(99);
+	}
+
+	return (buffer);
+}
+
+/**
+ * close_file - closes a file descriptor and handles errors
+ * @fd: file descriptor to close
+ */
+static void close_file(int fd)
 {
 	if (close(fd) == -1)
 	{
@@ -28,7 +48,7 @@ int main(int argc, char **argv)
 {
 	int fd_from, fd_to;
 	ssize_t r, w;
-	char buffer[BUF_SIZE];
+	char *buffer;
 
 	if (argc != 3)
 	{
@@ -36,10 +56,13 @@ int main(int argc, char **argv)
 		exit(97);
 	}
 
+	buffer = create_buffer(argv[2]);
+
 	fd_from = open(argv[1], O_RDONLY);
 	if (fd_from == -1)
 	{
 		dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", argv[1]);
+		free(buffer);
 		exit(98);
 	}
 
@@ -47,7 +70,8 @@ int main(int argc, char **argv)
 	if (fd_to == -1)
 	{
 		dprintf(STDERR_FILENO, "Error: Can't write to %s\n", argv[2]);
-		close_fd(fd_from);
+		free(buffer);
+		close_file(fd_from);
 		exit(99);
 	}
 
@@ -57,8 +81,9 @@ int main(int argc, char **argv)
 		if (w == -1 || w != r)
 		{
 			dprintf(STDERR_FILENO, "Error: Can't write to %s\n", argv[2]);
-			close_fd(fd_from);
-			close_fd(fd_to);
+			free(buffer);
+			close_file(fd_from);
+			close_file(fd_to);
 			exit(99);
 		}
 	}
@@ -66,13 +91,15 @@ int main(int argc, char **argv)
 	if (r == -1)
 	{
 		dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", argv[1]);
-		close_fd(fd_from);
-		close_fd(fd_to);
+		free(buffer);
+		close_file(fd_from);
+		close_file(fd_to);
 		exit(98);
 	}
 
-	close_fd(fd_from);
-	close_fd(fd_to);
+	free(buffer);
+	close_file(fd_from);
+	close_file(fd_to);
 
 	return (0);
 }
